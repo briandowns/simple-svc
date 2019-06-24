@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: simple-api-svc
+spec:
+  selector:
+    app: simple-svc
+  type: NodePort
+  ports:
+    - name: simple-svc-port
+      port: 80
+      targetPort: 8080

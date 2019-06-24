@@ -10,9 +10,10 @@
 #define STR(x) STR1(x)
 
 #define U_DISABLE_WEBSOCKET
+
 #define PORT 8080
-#define API_PREFIX "/api/v1"
 #define HEALTHZ_PATH "/healthz"
+#define API_PREFIX "/api/v1"
 #define HELLO_PATH API_PREFIX "/hello"
 
 /**
@@ -43,7 +44,9 @@ callback_hello(const struct _u_request *request, struct _u_response *response, v
     return U_CALLBACK_CONTINUE;
 }
 
-int main() {
+int
+main(int argc, char **argv)
+{
     log_init(stdout);
 
     struct _u_instance instance;
@@ -61,6 +64,7 @@ int main() {
         getchar();
     } else {
         log(LOG_ERROR, "msg", log_string("error starting framework"));
+        return 1;
     }
 
     ulfius_stop_framework(&instance);

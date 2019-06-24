@@ -4,16 +4,22 @@ VERSION := 0.1.0
 BINDIR := bin
 DEPDIR := deps
 BINARY := simple-svc
-CFLAGS := -lulfius -ljansson -lyder -lorcania -ljson-c
+CFLAGS := -lulfius -ljansson -lyder -lorcania -ljson-c 
 
 $(BINDIR)/$(BINARY): $(BINDIR) clean
-	$(CC) -Dgit_sha="$(git rev-parse HEAD)" main.c $(DEPDIR)/log.c $(CFLAGS) -o $(BINDIR)/$(BINARY) 
+	$(CC) main.c $(DEPDIR)/log.c $(CFLAGS) -o $(BINDIR)/$(BINARY) 
 
 $(BINDIR):
 	mkdir -p $(BINDIR)
 
-$(DEPDIR):
-	mkdir -p $(DEPDIR)
+.PHONY: push
+push:
+	docker push briandowns/simple-svc:latest
+
+.PHONY: deploy
+deploy:
+	kubectl -f ops/deployment.yaml
+	kubectl -f ops/service.yaml
 
 .PHONY: deps
 deps: $(DEPDIR)
