@@ -19,8 +19,8 @@ push:
 
 .PHONY: deploy
 deploy:
-	kubectl -f ops/deployment.yaml
-	kubectl -f ops/service.yaml
+	kubectl apply -f ops/deployment.yaml
+	kubectl apply -f ops/service.yaml
 
 .PHONY: deps
 deps: $(DEPDIR)
