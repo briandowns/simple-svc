@@ -1,6 +1,9 @@
+#include <arpa/inet.h>
+#include <netinet/in.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <strings.h>
+#include <sys/socket.h>
 
 #include <ulfius.h>
 
@@ -12,8 +15,8 @@
 #define U_DISABLE_WEBSOCKET
 
 #define PORT 8080
-#define HEALTHZ_PATH "/healthz"
-#define API_PREFIX "/api/v1"
+#define HEALTHZ_PATH          "/healthz"
+#define API_PREFIX            "/api/v1"
 #define HELLO_PATH API_PREFIX "/hello"
 
 /**
@@ -23,9 +26,10 @@
 int
 callback_health_check(const struct _u_request *request, struct _u_response *response, void *user_data)
 {
+    log(LOG_INFO, "msg", log_string("healthz called"), "client_addr", log_string(inet_ntoa(((struct sockaddr_in *)request->client_address)->sin_addr)));
     json_t * json_body = json_object();
     json_object_set_new(json_body, "status", json_string("OK")); 
-    json_object_set_new(json_body, "git_sha", json_string("asdfasdfasdfasdf1234123412341234s"));
+    json_object_set_new(json_body, "git_sha", json_string(STR(git_sha)));
     ulfius_set_json_body_response(response, 200, json_body);
     json_decref(json_body);
     return U_CALLBACK_CONTINUE;
@@ -37,6 +41,7 @@ callback_health_check(const struct _u_request *request, struct _u_response *resp
 int
 callback_hello(const struct _u_request *request, struct _u_response *response, void *user_data)
 {
+    log(LOG_INFO, "msg", log_string("hello endpoint called"), "client_addr", log_string(inet_ntoa(((struct sockaddr_in *)request->client_address)->sin_addr)));
     json_t *json_body = json_object();
     json_object_set_new(json_body, "hello", json_string("world"));
     ulfius_set_json_body_response(response, 200, json_body);
