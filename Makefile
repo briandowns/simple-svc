@@ -8,14 +8,14 @@ LDFLAGS := -lulfius -ljansson -lyder -lorcania -ljson-c
 CFLAGS  := -Dgit_sha=$(shell git rev-parse HEAD)
 
 $(BINDIR)/$(BINARY): $(BINDIR) clean
-	$(CC) main.c $(DEPDIR)/log.c $(CFLAGS) -o $(BINDIR)/$(BINARY) $(LDFLAGS)
+	$(CC) main.c $(DEPDIR)/log.c $(CFLAGS) -o $@ $(LDFLAGS)
 
 $(BINDIR):
-	mkdir -p $(BINDIR)
+	mkdir -p $@
 
 .PHONY: push
 push:
-	docker push briandowns/simple-svc:latest
+	docker push briandowns/$(BINARY):latest
 
 .PHONY: deploy
 deploy:

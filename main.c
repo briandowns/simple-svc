@@ -19,6 +19,8 @@
 #define API_PREFIX            "/api/v1"
 #define HELLO_PATH API_PREFIX "/hello"
 
+#define HTTP_METHOD_GET "GET"
+
 /**
  * callback_health_check handles all health check
  * requests to the service
@@ -61,8 +63,8 @@ main(int argc, char **argv)
         return 1;
     } 
 
-    ulfius_add_endpoint_by_val(&instance, "GET", HEALTHZ_PATH, NULL, 0, &callback_health_check, NULL);
-    ulfius_add_endpoint_by_val(&instance, "GET", HELLO_PATH, NULL, 1, &callback_hello, NULL);
+    ulfius_add_endpoint_by_val(&instance, HTTP_METHOD_GET, HEALTHZ_PATH, NULL, 0, &callback_health_check, NULL);
+    ulfius_add_endpoint_by_val(&instance, HTTP_METHOD_GET, HELLO_PATH, NULL, 1, &callback_hello, NULL);
 
     if (ulfius_start_framework(&instance) == U_OK) {
         log(LOG_INFO, "msg", log_string("starting framework"), log_int(instance.port));
