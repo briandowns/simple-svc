@@ -1,0 +1,13 @@
+[package]
+name = "simple-svc"
+type = "lib"
+build = "make"
+repository = "https://github.com/briandowns/simple-sv"
+version = "1.0.0"
+description = "A simple HTTP JSON REST API in C.
+homepage = ""
+authors = ["Brian Downs"]
+
+[dependencies]
+"github.com/briandowns/liblogger" = "1.0.0"
+
