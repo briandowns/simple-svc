@@ -8,7 +8,7 @@ LDFLAGS := -lulfius -ljansson -lyder -lorcania -ljson-c
 CFLAGS  := -Dgit_sha=$(shell git rev-parse HEAD)
 
 $(BINDIR)/$(BINARY): $(BINDIR) clean
-	$(CC) main.c $(DEPDIR)/log.c $(CFLAGS) -o $@ $(LDFLAGS)
+	$(CC) main.c $(DEPDIR)/logger.c $(CFLAGS) -o $@ $(LDFLAGS)
 
 $(BINDIR):
 	mkdir -p $@
@@ -24,7 +24,7 @@ deploy:
 
 .PHONY: deps
 deps: $(DEPDIR)
-	git clone git@github.com:briandowns/struCtured-logger.git $(DEPDIR)
+	git clone git@github.com:briandowns/liblogger.git $(DEPDIR)
 
 .PHONY:
 clean:

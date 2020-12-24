@@ -1,0 +1,9 @@
+FROM alpine
+
+RUN apk update
+
+COPY bin/simple-svc /simple-svc
+
+EXPOSE 8080
+CMD ["/simple-svc"]
+

@@ -7,7 +7,7 @@
 
 #include <ulfius.h>
 
-#include "deps/log.h"
+#include "deps/logger.h"
 
 #define STR1(x) #x
 #define STR(x) STR1(x)
@@ -28,7 +28,7 @@
 int
 callback_health_check(const struct _u_request *request, struct _u_response *response, void *user_data)
 {
-    log(LOG_INFO, "msg", log_string("healthz called"), "client_addr", log_string(inet_ntoa(((struct sockaddr_in *)request->client_address)->sin_addr)));
+    log(LOG_INFO, log_string("msg", "healthz called"), log_string("client_addr", inet_ntoa(((struct sockaddr_in *)request->client_address)->sin_addr)));
     json_t * json_body = json_object();
     json_object_set_new(json_body, "status", json_string("OK")); 
     json_object_set_new(json_body, "git_sha", json_string(STR(git_sha)));
@@ -43,7 +43,7 @@ callback_health_check(const struct _u_request *request, struct _u_response *resp
 int
 callback_hello(const struct _u_request *request, struct _u_response *response, void *user_data)
 {
-    log(LOG_INFO, "msg", log_string("hello endpoint called"), "client_addr", log_string(inet_ntoa(((struct sockaddr_in *)request->client_address)->sin_addr)));
+    log(LOG_INFO, log_string("msg", "hello endpoint called"), log_string("client_addr", inet_ntoa(((struct sockaddr_in *)request->client_address)->sin_addr)));
     json_t *json_body = json_object();
     json_object_set_new(json_body, "hello", json_string("world"));
     ulfius_set_json_body_response(response, 200, json_body);
@@ -59,7 +59,7 @@ main(int argc, char **argv)
     struct _u_instance instance;
 
     if (ulfius_init_instance(&instance, PORT, NULL, NULL) != U_OK) { 
-        log(LOG_ERROR, "msg", log_string("error ulfius_init_instance, abort"));
+        log(LOG_ERROR, log_string("msg", "error ulfius_init_instance, abort"));
         return 1;
     } 
 
@@ -67,10 +67,10 @@ main(int argc, char **argv)
     ulfius_add_endpoint_by_val(&instance, HTTP_METHOD_GET, HELLO_PATH, NULL, 1, &callback_hello, NULL);
 
     if (ulfius_start_framework(&instance) == U_OK) {
-        log(LOG_INFO, "msg", log_string("starting framework"), log_int(instance.port));
+        log(LOG_INFO, log_string("msg", "starting framework"), log_int("port", instance.port));
         getchar();
     } else {
-        log(LOG_ERROR, "msg", log_string("error starting framework"));
+        log(LOG_ERROR, log_string("msg", "error starting framework"));
         return 1;
     }
 

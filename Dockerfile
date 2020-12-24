@@ -6,8 +6,16 @@ RUN apt-get update &&  \
         libjansson-dev \
         libyder-dev    \
         liborcania-dev \
-        libulfius-dev
+        libulfius-dev  \
+        jq \
+        make build-essential \
+        git
 
+COPY . /code
+RUN cd /code && \
+    make && \
+    cp bin/simple-svc /simple-svc
+    
 EXPOSE 8080:8080
-COPY bin/simple-svc /
 CMD [ "/simple-svc" ]
+
